@@ -5,7 +5,6 @@ import styles from './index.module.scss'
 import ItemCard from '@/components/ItemCard'
 import { useAppStore } from '@/store'
 import { hotLocations } from '@/data/common'
-import type { Item } from '@/types'
 
 const HomePage: React.FC = () => {
   const items = useAppStore((state) => state.items)

@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, Input, Textarea, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import styles from './index.module.scss'
 import classnames from 'classnames'
-import { getItemById } from '@/data/items'
-import type { Item } from '@/types'
+import { useAppStore } from '@/store'
 
 const ClaimPage: React.FC = () => {
   const router = useRouter()
   const itemId = router.params.id || '1'
-  const [item, setItem] = useState<Item | undefined>()
+
+  const items = useAppStore((state) => state.items)
+  const item = useMemo(() => {
+    return items.find((i) => i.id === itemId)
+  }, [items, itemId])
+
   const [claimantName, setClaimantName] = useState('')
   const [claimantPhone, setClaimantPhone] = useState('')
   const [building, setBuilding] = useState('')
   const [description, setDescription] = useState('')
   const [idCardLast, setIdCardLast] = useState('')
-  const [images, setImages] = useState<string[]>([])
-
-  useEffect(() => {
-    const data = getItemById(itemId)
-    if (data) {
-      setItem(data)
-    }
-  }, [itemId])
+  const [images] = useState<string[]>([])
 
   const canSubmit = claimantName && claimantPhone && description
 
@@ -52,7 +49,7 @@ const ClaimPage: React.FC = () => {
             setTimeout(() => {
               Taro.navigateBack()
             }, 1500)
-          }, 1000)
+          }, 800)
         }
       }
     })
@@ -62,7 +59,7 @@ const ClaimPage: React.FC = () => {
     return (
       <View className={styles.page}>
         <View style={{ textAlign: 'center', padding: '100rpx 0', color: '#86909C' }}>
-          加载中...
+          物品不存在或已被删除
         </View>
       </View>
     )

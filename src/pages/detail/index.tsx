@@ -1,59 +1,58 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { View, Text, Image, Input, Swiper, SwiperItem, ScrollView } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import styles from './index.module.scss'
 import classnames from 'classnames'
 import { useAppStore } from '@/store'
-import type { Item, Comment } from '@/types'
+import type { Comment } from '@/types'
 import { categoryMap } from '@/types'
 import { formatTime } from '@/utils/index'
 
 const DetailPage: React.FC = () => {
   const router = useRouter()
   const itemId = router.params.id || '1'
-  
+
   const items = useAppStore((state) => state.items)
   const currentUser = useAppStore((state) => state.currentUser)
   const incrementViewCount = useAppStore((state) => state.incrementViewCount)
   const addComment = useAppStore((state) => state.addComment)
   const addReport = useAppStore((state) => state.addReport)
 
-  const [item, setItem] = useState<Item | undefined>()
   const [commentText, setCommentText] = useState('')
   const [loaded, setLoaded] = useState(false)
+  const viewedItemIdRef = useRef('')
+
+  const item = useMemo(() => {
+    return items.find((i) => i.id === itemId)
+  }, [items, itemId])
 
   const similarItems = useMemo(() => {
     if (!item) return []
     return items
-      .filter((i) => 
-        i.id !== item.id && 
-        i.category === item.category && 
-        i.type === item.type &&
-        i.status !== 'closed' &&
-        i.status !== 'expired'
+      .filter(
+        (i) =>
+          i.id !== item.id &&
+          i.category === item.category &&
+          i.type === item.type &&
+          i.status !== 'closed' &&
+          i.status !== 'expired'
       )
       .slice(0, 4)
   }, [item, items])
 
-  const initData = useCallback(() => {
-    const foundItem = items.find((i) => i.id === itemId)
-    if (foundItem) {
-      setItem(foundItem)
+  useEffect(() => {
+    if (viewedItemIdRef.current !== itemId) {
+      viewedItemIdRef.current = itemId
       incrementViewCount(itemId)
     }
     setLoaded(true)
-  }, [items, itemId, incrementViewCount])
+  }, [itemId, incrementViewCount])
 
-  useEffect(() => {
-    initData()
-  }, [initData])
-
-  const handleSendComment = useCallback(() => {
+  const handleSendComment = () => {
     if (!commentText.trim()) {
       Taro.showToast({ title: '请输入内容', icon: 'none' })
       return
     }
-
     if (!item) return
 
     const newComment: Comment = {
@@ -68,14 +67,8 @@ const DetailPage: React.FC = () => {
 
     addComment(itemId, newComment)
     setCommentText('')
-    
-    const updatedItem = items.find((i) => i.id === itemId)
-    if (updatedItem) {
-      setItem(updatedItem)
-    }
-    
     Taro.showToast({ title: '发布成功', icon: 'success' })
-  }, [commentText, item, currentUser, addComment, itemId, items])
+  }
 
   const handleClaim = () => {
     if (!item) return
@@ -86,7 +79,7 @@ const DetailPage: React.FC = () => {
 
   const handleContact = () => {
     if (!item?.contact) return
-    
+
     Taro.showActionSheet({
       itemList: ['拨打电话', '复制联系方式'],
       success: (res) => {
@@ -110,13 +103,13 @@ const DetailPage: React.FC = () => {
 
   const handleReport = () => {
     if (!item) return
-    
+
     Taro.showActionSheet({
       itemList: ['虚假信息', '疑似赃物', '违规内容', '疑似诈骗', '重复发布', '其他原因'],
       success: (res) => {
         const reasons = ['fake', 'stolen', 'offensive', 'scam', 'duplicate', 'other']
         const reason = reasons[res.tapIndex]
-        
+
         Taro.showModal({
           title: '举报确认',
           content: '确定要提交此举报吗？请确保信息真实有效。',
@@ -206,7 +199,12 @@ const DetailPage: React.FC = () => {
               </SwiperItem>
             ))}
           </Swiper>
-          <View className={classnames(styles.typeBadge, item.type === 'lost' ? styles.lostBadge : styles.foundBadge)}>
+          <View
+            className={classnames(
+              styles.typeBadge,
+              item.type === 'lost' ? styles.lostBadge : styles.foundBadge
+            )}
+          >
             {item.type === 'lost' ? '🔍 寻物启事' : '🎁 失物招领'}
           </View>
           {statusBadgeText && (
@@ -262,7 +260,8 @@ const DetailPage: React.FC = () => {
         </View>
 
         <View className={styles.verifyTip}>
-          ⚠️ 温馨提示：认领物品时请务必核实身份，提供物品独有特征，避免冒领。请在物业或公共场合进行交接。
+          ⚠️
+          温馨提示：认领物品时请务必核实身份，提供物品独有特征，避免冒领。请在物业或公共场合进行交接。
         </View>
 
         <View className={styles.section}>
@@ -290,7 +289,14 @@ const DetailPage: React.FC = () => {
                 </View>
               ))
             ) : (
-              <View style={{ textAlign: 'center', padding: '60rpx 0', color: '#86909C', fontSize: '28rpx' }}>
+              <View
+                style={{
+                  textAlign: 'center',
+                  padding: '60rpx 0',
+                  color: '#86909C',
+                  fontSize: '28rpx'
+                }}
+              >
                 暂无留言，快来发表第一条线索吧！
               </View>
             )}
@@ -324,7 +330,14 @@ const DetailPage: React.FC = () => {
               ))}
             </ScrollView>
           ) : (
-            <View style={{ textAlign: 'center', padding: '40rpx 0', color: '#86909C', fontSize: '28rpx' }}>
+            <View
+              style={{
+                textAlign: 'center',
+                padding: '40rpx 0',
+                color: '#86909C',
+                fontSize: '28rpx'
+              }}
+            >
               暂无相似物品
             </View>
           )}
@@ -341,7 +354,9 @@ const DetailPage: React.FC = () => {
           onConfirm={handleSendComment}
           maxlength={200}
         />
-        <View className={styles.sendBtn} onClick={handleSendComment}>发送</View>
+        <View className={styles.sendBtn} onClick={handleSendComment}>
+          发送
+        </View>
       </View>
 
       <View className={styles.bottomBar}>

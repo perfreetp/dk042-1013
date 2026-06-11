@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
-import classnames from 'classnames'
 import { useAppStore } from '@/store'
 
 const MinePage: React.FC = () => {

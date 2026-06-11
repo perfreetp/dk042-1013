@@ -217,3 +217,22 @@
     background: $color-text-disabled;
   }
 }
+
+.itemInfo {
+  padding: $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+}
+
+.itemTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.itemMeta {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}

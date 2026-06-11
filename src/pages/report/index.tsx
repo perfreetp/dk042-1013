@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { View, Text, Textarea, Input } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import styles from './index.module.scss'
 import classnames from 'classnames'
+import { useAppStore } from '@/store'
 
 const reportReasons = [
   { id: 'fake', label: '虚假信息，物品不存在' },
@@ -16,6 +17,15 @@ const reportReasons = [
 const ReportPage: React.FC = () => {
   const router = useRouter()
   const itemId = router.params.itemId || ''
+
+  const items = useAppStore((state) => state.items)
+  const currentUser = useAppStore((state) => state.currentUser)
+  const addReport = useAppStore((state) => state.addReport)
+
+  const item = useMemo(() => {
+    return items.find((i) => i.id === itemId)
+  }, [items, itemId])
+
   const [selectedReason, setSelectedReason] = useState('')
   const [description, setDescription] = useState('')
   const [contact, setContact] = useState('')
@@ -38,18 +48,23 @@ const ReportPage: React.FC = () => {
       confirmColor: '#F53F3F',
       success: (res) => {
         if (res.confirm) {
-          Taro.showLoading({ title: '提交中...' })
+          addReport({
+            itemId: itemId,
+            itemTitle: item?.title || '未知物品',
+            reason: selectedReason,
+            description: description.trim(),
+            reporter: currentUser.name,
+            reporterPhone: contact || currentUser.phone
+          })
+
+          Taro.showToast({
+            title: '举报已提交',
+            icon: 'success',
+            duration: 2000
+          })
           setTimeout(() => {
-            Taro.hideLoading()
-            Taro.showToast({
-              title: '举报已提交',
-              icon: 'success',
-              duration: 2000
-            })
-            setTimeout(() => {
-              Taro.navigateBack()
-            }, 1500)
-          }, 1000)
+            Taro.navigateBack()
+          }, 1500)
         }
       }
     })
@@ -70,6 +85,19 @@ const ReportPage: React.FC = () => {
         </View>
       </View>
 
+      {item && (
+        <View className={styles.formCard}>
+          <View className={styles.formTitle}>
+            <Text>📦</Text>
+            <Text>举报物品</Text>
+          </View>
+          <View className={styles.itemInfo}>
+            <Text className={styles.itemTitle}>{item.title}</Text>
+            <Text className={styles.itemMeta}>📍 {item.location} | 🕐 {item.time}</Text>
+          </View>
+        </View>
+      )}
+
       <View className={styles.formCard}>
         <View className={styles.formTitle}>
           <Text>📋</Text>
@@ -77,10 +105,13 @@ const ReportPage: React.FC = () => {
         </View>
 
         <View className={styles.reasonList}>
-          {reportReasons.map(reason => (
+          {reportReasons.map((reason) => (
             <View
               key={reason.id}
-              className={classnames(styles.reasonItem, selectedReason === reason.id && styles.active)}
+              className={classnames(
+                styles.reasonItem,
+                selectedReason === reason.id && styles.active
+              )}
               onClick={() => setSelectedReason(reason.id)}
             >
               <View className={styles.radio} />

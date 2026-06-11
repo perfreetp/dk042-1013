@@ -89,9 +89,7 @@ const PublishPage: React.FC = () => {
         lostTime: time || '未填写',
         contactName: contactName || currentUser.name,
         contact,
-        images: itemImages,
-        publisher: currentUser.name,
-        publisherPhone: currentUser.phone
+        images: itemImages
       })
 
       Taro.hideLoading()

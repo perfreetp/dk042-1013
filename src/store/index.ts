@@ -25,7 +25,7 @@ interface AppState {
   notices: Notice[]
   reports: Report[]
   currentUser: UserProfile
-  addItem: (item: Omit<Item, 'id' | 'createdAt' | 'status' | 'viewCount' | 'messageCount' | 'publisher'>) => void
+  addItem: (item: Omit<Item, 'id' | 'createdAt' | 'status' | 'viewCount' | 'messageCount' | 'publisher' | 'publisherAvatar' | 'publisherPhone'>) => void
   updateItemStatus: (id: string, status: ItemStatus) => void
   addComment: (itemId: string, comment: Comment) => void
   incrementViewCount: (id: string) => void
