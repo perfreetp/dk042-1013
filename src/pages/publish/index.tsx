@@ -5,8 +5,23 @@ import styles from './index.module.scss'
 import classnames from 'classnames'
 import type { ItemType, ItemCategory } from '@/types'
 import { categoryMap, categoryList } from '@/types'
+import { useAppStore } from '@/store'
+
+const defaultImages: Record<string, string[]> = {
+  electronics: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'],
+  cards: ['https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=400&fit=crop'],
+  keys: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop'],
+  bags: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop'],
+  documents: ['https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&h=400&fit=crop'],
+  clothes: ['https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&h=400&fit=crop'],
+  accessories: ['https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&h=400&fit=crop'],
+  pets: ['https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop'],
+  other: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop']
+}
 
 const PublishPage: React.FC = () => {
+  const addItem = useAppStore((state) => state.addItem)
+  const currentUser = useAppStore((state) => state.currentUser)
   const [type, setType] = useState<ItemType>('lost')
   const [category, setCategory] = useState<ItemCategory>('other')
   const [title, setTitle] = useState('')
@@ -37,6 +52,18 @@ const PublishPage: React.FC = () => {
 
   const canSubmit = title && description && location && contact
 
+  const resetForm = () => {
+    setTitle('')
+    setDescription('')
+    setColor('')
+    setLocation('')
+    setBuilding('')
+    setTime('')
+    setContactName('')
+    setContact('')
+    setImages([])
+  }
+
   const handleSubmit = () => {
     if (!canSubmit) {
       Taro.showToast({
@@ -49,16 +76,35 @@ const PublishPage: React.FC = () => {
     Taro.showLoading({ title: '提交中...' })
 
     setTimeout(() => {
+      const itemImages = images.length > 0 ? images : defaultImages[category] || defaultImages.other
+      
+      addItem({
+        type,
+        category,
+        title,
+        description,
+        color: color || '未填写',
+        location,
+        building: building || '未填写',
+        lostTime: time || '未填写',
+        contactName: contactName || currentUser.name,
+        contact,
+        images: itemImages,
+        publisher: currentUser.name,
+        publisherPhone: currentUser.phone
+      })
+
       Taro.hideLoading()
       Taro.showToast({
         title: '发布成功，等待审核',
         icon: 'success',
         duration: 2000
       })
+      resetForm()
       setTimeout(() => {
         Taro.switchTab({ url: '/pages/home/index' })
       }, 1500)
-    }, 1000)
+    }, 800)
   }
 
   return (

@@ -1,24 +1,44 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import styles from './index.module.scss'
-import type { UserProfile } from '@/types'
-
-const mockUser: UserProfile = {
-  id: 'u1',
-  name: '张先生',
-  avatar: 'https://picsum.photos/id/64/200/200',
-  phone: '138****8888',
-  building: '3号楼2单元1502室',
-  role: 'resident',
-  publishCount: 5,
-  foundCount: 3,
-  thankCount: 2
-}
+import classnames from 'classnames'
+import { useAppStore } from '@/store'
 
 const MinePage: React.FC = () => {
+  const currentUser = useAppStore((state) => state.currentUser)
+  const items = useAppStore((state) => state.items)
+  const reports = useAppStore((state) => state.reports)
+  const switchRole = useAppStore((state) => state.switchRole)
+
+  const pendingCount = useMemo(() => {
+    return items.filter((i) => i.status === 'pending').length
+  }, [items])
+
+  const reportCount = useMemo(() => {
+    return reports.filter((r) => r.status === 'pending').length
+  }, [reports])
+
+  const expiredCount = useMemo(() => {
+    const now = Date.now()
+    return items.filter((item) => {
+      const days = (now - new Date(item.createdAt).getTime()) / (1000 * 60 * 60 * 24)
+      return days >= 10 && item.status === 'active'
+    }).length
+  }, [items])
+
+  const myPublishCount = useMemo(() => {
+    return items.filter((i) => i.publisher === currentUser.name).length
+  }, [items, currentUser.name])
+
+  const claimedCount = useMemo(() => {
+    return items.filter(
+      (i) => i.status === 'claimed' && i.publisher === currentUser.name
+    ).length
+  }, [items, currentUser.name])
+
   const goToMyPublish = () => {
-    Taro.showToast({ title: '我的发布', icon: 'none' })
+    Taro.navigateTo({ url: '/pages/myPublish/index' })
   }
 
   const goToMyClaim = () => {
@@ -34,19 +54,33 @@ const MinePage: React.FC = () => {
   }
 
   const goToReview = () => {
-    Taro.showToast({ title: '物业审核', icon: 'none' })
+    Taro.navigateTo({ url: '/pages/review/index' })
   }
 
-  const goToReport = () => {
-    Taro.showToast({ title: '举报管理', icon: 'none' })
+  const goToReportManage = () => {
+    Taro.navigateTo({ url: '/pages/reportManage/index' })
   }
 
   const goToExpired = () => {
-    Taro.showToast({ title: '过期下架', icon: 'none' })
+    Taro.navigateTo({ url: '/pages/expired/index' })
   }
 
   const goToSettings = () => {
     Taro.showToast({ title: '设置', icon: 'none' })
+  }
+
+  const handleSwitchRole = () => {
+    Taro.showActionSheet({
+      itemList: ['🏠 小区住户', '👮 保安人员', '🏢 物业管理员'],
+      success: (res) => {
+        const roles: Array<'resident' | 'security' | 'property'> = ['resident', 'security', 'property']
+        switchRole(roles[res.tapIndex])
+        Taro.showToast({
+          title: '身份已切换',
+          icon: 'success'
+        })
+      }
+    })
   }
 
   const getRoleText = (role: string) => {
@@ -60,30 +94,35 @@ const MinePage: React.FC = () => {
     }
   }
 
+  const isAdmin = currentUser.role === 'property' || currentUser.role === 'security'
+
   return (
     <ScrollView scrollY className={styles.page}>
       <View className={styles.header}>
         <View className={styles.userInfo}>
-          <Image className={styles.avatar} src={mockUser.avatar} mode='aspectFill' />
+          <Image className={styles.avatar} src={currentUser.avatar} mode='aspectFill' />
           <View className={styles.userDetail}>
-            <View className={styles.userName}>{mockUser.name}</View>
-            <View className={styles.roleTag}>{getRoleText(mockUser.role)}</View>
-            <View className={styles.building}>📍 {mockUser.building}</View>
+            <View className={styles.userName}>{currentUser.name}</View>
+            <View className={styles.roleTag} onClick={handleSwitchRole}>
+              {getRoleText(currentUser.role)}
+              <Text className={styles.switchIcon}>⇄</Text>
+            </View>
+            <View className={styles.building}>📍 {currentUser.building}</View>
           </View>
         </View>
       </View>
 
       <View className={styles.stats}>
         <View className={styles.statItem}>
-          <View className={styles.statNum}>{mockUser.publishCount}</View>
+          <View className={styles.statNum}>{myPublishCount}</View>
           <View className={styles.statLabel}>发布数</View>
         </View>
         <View className={styles.statItem}>
-          <View className={styles.statNum}>{mockUser.foundCount}</View>
+          <View className={styles.statNum}>{claimedCount}</View>
           <View className={styles.statLabel}>找回数</View>
         </View>
         <View className={styles.statItem}>
-          <View className={styles.statNum}>{mockUser.thankCount}</View>
+          <View className={styles.statNum}>{currentUser.thankCount}</View>
           <View className={styles.statLabel}>感谢信</View>
         </View>
       </View>
@@ -140,25 +179,35 @@ const MinePage: React.FC = () => {
         </View>
       </View>
 
-      {mockUser.role === 'property' && (
+      {isAdmin && (
         <View className={styles.section}>
-          <View className={styles.sectionTitle}>物业管理</View>
+          <View className={styles.sectionTitle}>
+            管理后台
+            <Text className={styles.adminTip}>（{currentUser.role === 'property' ? '物业' : '保安'}）</Text>
+          </View>
           <View className={styles.menuCard}>
             <View className={styles.menuItem} onClick={goToReview}>
               <View className={`${styles.menuIcon} ${styles.iconGreen}`}>✅</View>
               <View className={styles.menuContent}>
                 <View className={styles.menuTitle}>
                   发布审核
-                  <Text className={styles.badge}>3</Text>
+                  {pendingCount > 0 && (
+                    <View className={styles.badge}>{pendingCount}</View>
+                  )}
                 </View>
                 <View className={styles.menuDesc}>审核用户发布的信息</View>
               </View>
               <Text className={styles.menuArrow}>›</Text>
             </View>
-            <View className={styles.menuItem} onClick={goToReport}>
+            <View className={styles.menuItem} onClick={goToReportManage}>
               <View className={`${styles.menuIcon} ${styles.iconRed}`}>🚨</View>
               <View className={styles.menuContent}>
-                <View className={styles.menuTitle}>举报管理</View>
+                <View className={styles.menuTitle}>
+                  举报管理
+                  {reportCount > 0 && (
+                    <View className={styles.badge}>{reportCount}</View>
+                  )}
+                </View>
                 <View className={styles.menuDesc}>处理虚假信息举报</View>
               </View>
               <Text className={styles.menuArrow}>›</Text>
@@ -166,7 +215,12 @@ const MinePage: React.FC = () => {
             <View className={styles.menuItem} onClick={goToExpired}>
               <View className={`${styles.menuIcon} ${styles.iconOrange}`}>⏰</View>
               <View className={styles.menuContent}>
-                <View className={styles.menuTitle}>过期下架</View>
+                <View className={styles.menuTitle}>
+                  过期下架
+                  {expiredCount > 0 && (
+                    <View className={styles.badge}>{expiredCount}</View>
+                  )}
+                </View>
                 <View className={styles.menuDesc}>管理过期的物品信息</View>
               </View>
               <Text className={styles.menuArrow}>›</Text>

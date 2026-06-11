@@ -23,16 +23,19 @@ export interface Item {
   location: string
   building: string
   time: string
+  lostTime?: string
   images: string[]
   contact: string
   contactName: string
   publisher: string
   publisherAvatar: string
+  publisherPhone: string
   status: ItemStatus
   createdAt: string
   viewCount: number
   messageCount: number
   isHot?: boolean
+  comments?: Comment[]
 }
 
 export interface Message {

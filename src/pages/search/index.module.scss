@@ -171,6 +171,16 @@
   margin-bottom: $spacing-md;
 }
 
+.resetBtn {
+  @include button-reset;
+  padding: $spacing-sm $spacing-xl;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-md;
+}
+
 .emptyBtn {
   @include button-reset;
   padding: $spacing-sm $spacing-xl;

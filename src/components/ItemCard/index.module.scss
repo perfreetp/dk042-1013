@@ -51,6 +51,33 @@
   color: $color-found;
 }
 
+.statusTag {
+  position: absolute;
+  bottom: $spacing-xs;
+  left: $spacing-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  z-index: 2;
+}
+
+.pendingStatus {
+  background: $color-primary-bg;
+  color: $color-primary;
+}
+
+.claimedStatus {
+  background: $color-info;
+  background: rgba(22, 93, 255, 0.15);
+  color: $color-info;
+}
+
+.closedStatus {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
 .content {
   flex: 1;
   margin-left: $spacing-lg;

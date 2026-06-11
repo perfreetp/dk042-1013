@@ -8,7 +8,11 @@ export default defineAppConfig({
     'pages/detail/index',
     'pages/claim/index',
     'pages/notice/index',
-    'pages/report/index'
+    'pages/report/index',
+    'pages/review/index',
+    'pages/expired/index',
+    'pages/reportManage/index',
+    'pages/myPublish/index'
   ],
   window: {
     backgroundTextStyle: 'light',

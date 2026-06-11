@@ -1,5 +1,25 @@
 import type { Item } from '@/types'
 
+const mockComments = [
+  {
+    id: 'c1',
+    userId: 'u2',
+    userName: '李阿姨',
+    userAvatar: 'https://picsum.photos/id/65/100/100',
+    content: '我昨天好像在超市见过这个手机，不知道是不是同一个',
+    time: '2小时前',
+    isClue: true
+  },
+  {
+    id: 'c2',
+    userId: 'u3',
+    userName: '王叔叔',
+    userAvatar: 'https://picsum.photos/id/66/100/100',
+    content: '失主可以去保安亭问问，那里经常有人交捡到的东西',
+    time: '1小时前'
+  }
+]
+
 export const mockItems: Item[] = [
   {
     id: '1',
@@ -16,11 +36,13 @@ export const mockItems: Item[] = [
     contactName: '王师傅',
     publisher: '王师傅',
     publisherAvatar: 'https://picsum.photos/id/64/100/100',
+    publisherPhone: '138****8888',
     status: 'active',
     createdAt: '2024-01-15T08:30:00Z',
     viewCount: 156,
     messageCount: 12,
-    isHot: true
+    isHot: true,
+    comments: [...mockComments]
   },
   {
     id: '2',
@@ -37,10 +59,12 @@ export const mockItems: Item[] = [
     contactName: '李女士',
     publisher: '李女士',
     publisherAvatar: 'https://picsum.photos/id/91/100/100',
-    status: 'active',
+    publisherPhone: '139****6666',
+    status: 'pending',
     createdAt: '2024-01-14T16:00:00Z',
     viewCount: 89,
-    messageCount: 5
+    messageCount: 5,
+    comments: [mockComments[0]]
   },
   {
     id: '3',
@@ -57,11 +81,13 @@ export const mockItems: Item[] = [
     contactName: '赵大爷',
     publisher: '赵大爷',
     publisherAvatar: 'https://picsum.photos/id/177/100/100',
+    publisherPhone: '137****5555',
     status: 'active',
     createdAt: '2024-01-15T10:00:00Z',
     viewCount: 234,
     messageCount: 8,
-    isHot: true
+    isHot: true,
+    comments: [...mockComments]
   },
   {
     id: '4',
@@ -78,11 +104,13 @@ export const mockItems: Item[] = [
     contactName: '陈小姐',
     publisher: '陈小姐',
     publisherAvatar: 'https://picsum.photos/id/338/100/100',
+    publisherPhone: '136****7777',
     status: 'active',
     createdAt: '2024-01-15T07:00:00Z',
     viewCount: 312,
     messageCount: 25,
-    isHot: true
+    isHot: true,
+    comments: [...mockComments, ...mockComments]
   },
   {
     id: '5',
@@ -99,10 +127,12 @@ export const mockItems: Item[] = [
     contactName: '孙保安',
     publisher: '孙保安',
     publisherAvatar: 'https://picsum.photos/id/1027/100/100',
+    publisherPhone: '135****9999',
     status: 'active',
     createdAt: '2024-01-14T20:00:00Z',
     viewCount: 178,
-    messageCount: 6
+    messageCount: 6,
+    comments: [mockComments[1]]
   },
   {
     id: '6',
@@ -119,10 +149,12 @@ export const mockItems: Item[] = [
     contactName: '周先生',
     publisher: '周先生',
     publisherAvatar: 'https://picsum.photos/id/1025/100/100',
-    status: 'active',
+    publisherPhone: '134****3333',
+    status: 'pending',
     createdAt: '2024-01-14T18:00:00Z',
     viewCount: 67,
-    messageCount: 3
+    messageCount: 3,
+    comments: []
   },
   {
     id: '7',
@@ -139,10 +171,12 @@ export const mockItems: Item[] = [
     contactName: '物业前台',
     publisher: '物业前台',
     publisherAvatar: 'https://picsum.photos/id/1012/100/100',
+    publisherPhone: '133****2222',
     status: 'active',
     createdAt: '2024-01-13T19:00:00Z',
     viewCount: 45,
-    messageCount: 2
+    messageCount: 2,
+    comments: []
   },
   {
     id: '8',
@@ -159,10 +193,12 @@ export const mockItems: Item[] = [
     contactName: '吴妈妈',
     publisher: '吴妈妈',
     publisherAvatar: 'https://picsum.photos/id/1014/100/100',
-    status: 'active',
+    publisherPhone: '132****1111',
+    status: 'claimed',
     createdAt: '2024-01-14T15:00:00Z',
     viewCount: 56,
-    messageCount: 4
+    messageCount: 4,
+    comments: [mockComments[0]]
   },
   {
     id: '9',
@@ -179,10 +215,12 @@ export const mockItems: Item[] = [
     contactName: '张阿姨',
     publisher: '张阿姨',
     publisherAvatar: 'https://picsum.photos/id/1027/100/100',
-    status: 'active',
+    publisherPhone: '131****0000',
+    status: 'pending',
     createdAt: '2024-01-15T09:00:00Z',
     viewCount: 34,
-    messageCount: 1
+    messageCount: 1,
+    comments: []
   },
   {
     id: '10',
@@ -199,10 +237,12 @@ export const mockItems: Item[] = [
     contactName: '郑先生',
     publisher: '郑先生',
     publisherAvatar: 'https://picsum.photos/id/1005/100/100',
+    publisherPhone: '130****1234',
     status: 'active',
     createdAt: '2024-01-15T08:00:00Z',
     viewCount: 78,
-    messageCount: 6
+    messageCount: 6,
+    comments: [mockComments[1]]
   }
 ]
 
