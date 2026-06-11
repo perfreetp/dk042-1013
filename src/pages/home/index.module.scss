@@ -1,0 +1,232 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.banner {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: $spacing-xl $page-padding 48rpx;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100rpx;
+    right: -80rpx;
+    width: 300rpx;
+    height: 300rpx;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -60rpx;
+    left: -40rpx;
+    width: 200rpx;
+    height: 200rpx;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+}
+
+.bannerContent {
+  position: relative;
+  z-index: 1;
+}
+
+.greeting {
+  color: $color-text-white;
+  font-size: $font-size-md;
+  opacity: 0.9;
+  margin-bottom: $spacing-sm;
+}
+
+.title {
+  color: $color-text-white;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-sm;
+}
+
+.subtitle {
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  opacity: 0.85;
+}
+
+.quickPublish {
+  margin-top: $spacing-lg;
+  display: flex;
+  gap: $spacing-md;
+}
+
+.quickBtn {
+  @include button-reset;
+  flex: 1;
+  height: 72rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.lostBtn {
+  background: rgba(255, 255, 255, 0.25);
+  color: $color-text-white;
+  border: 2rpx solid rgba(255, 255, 255, 0.4);
+}
+
+.foundBtn {
+  background: $color-text-white;
+  color: $color-primary;
+}
+
+.section {
+  margin: $spacing-lg $page-padding 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.sectionIcon {
+  font-size: 32rpx;
+}
+
+.moreLink {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.categories {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg 0;
+  box-shadow: $shadow-card;
+  margin-top: -32rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.categoryItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.categoryIcon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-lg;
+  background: $color-primary-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.foundIcon {
+  background: $color-found-bg;
+}
+
+.lostIcon {
+  background: $color-lost-bg;
+}
+
+.hotIcon {
+  background: $color-primary-bg;
+}
+
+.noticeIcon {
+  background: $color-info;
+  background: rgba(22, 93, 255, 0.1);
+}
+
+.categoryText {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.hotLocations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+}
+
+.locationCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  text-align: center;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-2rpx);
+  }
+}
+
+.locationIcon {
+  font-size: 40rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.locationName {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  @include text-ellipsis;
+}
+
+.locationCount {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.listArea {
+  margin-top: $spacing-lg;
+}
+
+.emptyState {
+  text-align: center;
+  padding: $spacing-xl 0;
+  color: $color-text-tertiary;
+  font-size: $font-size-sm;
+}

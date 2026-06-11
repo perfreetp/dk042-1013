@@ -1,0 +1,332 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 140rpx;
+}
+
+.imageSwiper {
+  width: 100%;
+  height: 500rpx;
+  background: $color-bg-card;
+  position: relative;
+}
+
+.swiperImage {
+  width: 100%;
+  height: 500rpx;
+}
+
+.typeBadge {
+  position: absolute;
+  top: $spacing-md;
+  left: $spacing-md;
+  z-index: 10;
+  padding: 10rpx 24rpx;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.lostBadge {
+  background: $color-lost;
+  color: white;
+}
+
+.foundBadge {
+  background: $color-found;
+  color: white;
+}
+
+.statusBadge {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  z-index: 10;
+  padding: 10rpx 24rpx;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+.infoCard {
+  background: $color-bg-card;
+  margin: -32rpx $page-padding 0;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  line-height: 1.4;
+  margin-bottom: $spacing-md;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md $spacing-lg;
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+
+  .icon {
+    margin-right: 8rpx;
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.description {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.7;
+  margin-bottom: $spacing-lg;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+}
+
+.infoBox {
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.section {
+  margin: $spacing-lg $page-padding 0;
+}
+
+.commentList {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  overflow: hidden;
+}
+
+.commentItem {
+  padding: $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.commentAvatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: $radius-round;
+  margin-right: $spacing-sm;
+}
+
+.commentName {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  flex: 1;
+}
+
+.clueTag {
+  background: $color-success-bg;
+  color: $color-success;
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-medium;
+}
+
+.commentTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: $spacing-sm;
+}
+
+.commentContent {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  margin-left: 72rpx;
+}
+
+.commentInput {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md $page-padding;
+  background: $color-bg-card;
+  position: fixed;
+  bottom: 136rpx;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.commentField {
+  flex: 1;
+  height: 64rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-button;
+  padding: 0 $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+}
+
+.sendBtn {
+  @include button-reset;
+  padding: 0 $spacing-lg;
+  height: 64rpx;
+  background: $color-primary;
+  color: white;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.similarList {
+  display: flex;
+  gap: $spacing-md;
+  overflow-x: auto;
+  padding-bottom: $spacing-sm;
+}
+
+.similarCard {
+  flex-shrink: 0;
+  width: 240rpx;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+}
+
+.similarImg {
+  width: 100%;
+  height: 200rpx;
+}
+
+.similarInfo {
+  padding: $spacing-sm;
+}
+
+.similarTitle {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  font-weight: $font-weight-medium;
+}
+
+.similarMeta {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.verifyTip {
+  background: $color-primary-bg;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin: 0 $page-padding $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-primary-dark;
+  line-height: 1.6;
+}
+
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc($spacing-md + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+  z-index: 100;
+}
+
+.actionBtn {
+  @include button-reset;
+  flex: 1;
+  height: 88rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: white;
+}
+
+.secondaryBtn {
+  background: $color-bg-hover;
+  color: $color-text-primary;
+}
+
+.reportBtn {
+  @include button-reset;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: $radius-button;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

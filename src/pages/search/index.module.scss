@@ -1,0 +1,181 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 40rpx;
+}
+
+.searchBar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: $color-primary;
+  padding: $spacing-md $page-padding;
+}
+
+.searchInput {
+  display: flex;
+  align-items: center;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  height: 72rpx;
+  padding: 0 $spacing-md;
+}
+
+.searchIcon {
+  font-size: 28rpx;
+  margin-right: $spacing-sm;
+}
+
+.searchInputField {
+  flex: 1;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.clearBtn {
+  padding: $spacing-sm;
+  color: $color-text-tertiary;
+  font-size: $font-size-lg;
+}
+
+.filterTabs {
+  display: flex;
+  background: $color-bg-card;
+  padding: 0 $page-padding;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.filterTab {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  position: relative;
+  transition: all $transition-base;
+
+  &.active {
+    color: $color-primary;
+    font-weight: $font-weight-semibold;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48rpx;
+      height: 6rpx;
+      background: $color-primary;
+      border-radius: 3rpx;
+    }
+  }
+}
+
+.filterSection {
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.filterLabel {
+  width: 100rpx;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  flex-shrink: 0;
+}
+
+.filterOptions {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.filterTag {
+  padding: 10rpx 24rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+
+  &.active {
+    background: $color-primary-bg;
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.results {
+  padding: $spacing-md $page-padding 0;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.resultCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.sortOptions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.sortItem {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+
+  &.active {
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-md;
+}
+
+.emptyBtn {
+  @include button-reset;
+  padding: $spacing-sm $spacing-xl;
+  background: $color-primary;
+  color: $color-text-white;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+}
